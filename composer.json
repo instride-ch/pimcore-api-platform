@@ -1,0 +1,52 @@
+{
+    "name": "w-vision/pimcore-api-platform",
+    "type": "pimcore-bundle",
+    "description": "Pimcore API Platform Bridge",
+    "keywords": ["pimcore", "api", "api-platform"],
+    "homepage": "https://www.w-vision.ch",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "w-vision AG",
+            "email": "support@w-vision.ch",
+            "homepage": "https://www.w-vision.ch",
+            "role": "Web Development Agency"
+        },
+        {
+            "name": "Dominik Pfaffenbauer",
+            "email": "dominik@pfaffenbauer.at",
+            "homepage": "https://www.pfaffenbauer.at/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "api-platform/core": "^2.5",
+        "pimcore/pimcore": "^6.6",
+        "webonyx/graphql-php": "^0.13"
+    },
+    "require-dev": {
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Wvision\\Bundle\\PimcoreApiPlatformBundle\\": "src/PimcoreApiPlatformBundle"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "app/AppKernel.php"
+        ]
+    },
+    "extra": {
+        "pimcore": {
+            "bundles": [
+                "Wvision\\Bundle\\PimcoreApiPlatformBundle\\PimcoreApiPlatformBundle"
+            ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -1,0 +1,4 @@
+Pimcore\Model\DataObject\Localizedfield:
+    attributes:
+        items:
+            groups: ['get']

@@ -1,0 +1,19 @@
+Pimcore\Model\Property:
+    attributes:
+        name:
+            groups: ['get']
+        data:
+            groups: ['get']
+        type:
+            groups: ['get']
+        ctype:
+            groups: ['get']
+        cpath:
+            groups: ['get']
+        cid:
+            groups: ['get']
+        inheritable:
+            groups: ['get']
+        inherited:
+            groups: ['get']
+

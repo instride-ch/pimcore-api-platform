@@ -1,0 +1,6 @@
+services:
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\GraphQl\TypeConverter:
+        decorates: 'api_platform.graphql.type_converter'
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\GraphQl\TypeConverter.inner'
+            - '@api_platform.graphql.types_container'

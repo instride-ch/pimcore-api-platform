@@ -1,0 +1,65 @@
+resources:
+    Pimcore\Model\Asset:
+        shortName: 'Asset'
+        attributes:
+            normalization_context:
+                groups: ['get']
+            denormalization_context:
+                groups: ['set']
+        properties:
+            id:
+                identifier: true
+            parentId: ~
+            type: ~
+            data: ~
+            fullPath: ~
+
+    Pimcore\Model\Asset\Document:
+        shortName: 'Asset_Document'
+        properties:
+            id:
+                identifier: true
+
+    Pimcore\Model\Asset\Image:
+        shortName: 'Asset_Image'
+        properties:
+            id:
+                identifier: true
+
+    Pimcore\Model\Asset\Archive:
+        shortName: 'Asset_Archive'
+        properties:
+            id:
+                identifier: true
+
+    Pimcore\Model\Asset\Audio:
+        shortName: 'Asset_Audio'
+        properties:
+            id:
+                identifier: true
+
+    Pimcore\Model\Asset\Folder:
+        shortName: 'Asset_Folder'
+        properties:
+            id:
+                identifier: true
+
+    Pimcore\Model\Asset\Text:
+        shortName: 'Asset_Text'
+        properties:
+            id:
+                identifier: true
+
+    Pimcore\Model\Asset\Video:
+        shortName: 'Asset_Video'
+        properties:
+            id:
+                identifier: true
+
+    Pimcore\Model\Asset\Unknown:
+        shortName: 'Asset_Unknown'
+        properties:
+            id:
+                identifier: true
+
+

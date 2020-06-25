@@ -1,0 +1,42 @@
+Pimcore\Model\Asset:
+    attributes:
+        id:
+            groups: ['get']
+        parentId:
+            groups: ['get']
+        type:
+            groups: ['get']
+        filename:
+            groups: ['get']
+        path:
+            groups: ['get']
+        mimetype:
+            groups: ['get']
+        creationDate:
+            groups: ['get']
+        modificationDate:
+            groups: ['get']
+        userOwner:
+            groups: ['get']
+        userModification:
+            groups: ['get']
+        properties:
+            groups: ['get']
+        versions:
+            groups: ['get']
+        metadata:
+            groups: ['get']
+        locked:
+            groups: ['get']
+#        customSettings:
+#            groups: ['get']
+        hasMetaData:
+            groups: ['get']
+        dependencies:
+            groups: ['get']
+        scheduledTasks:
+            groups: ['get']
+        versionCount:
+            groups: ['get']
+        fullPath:
+            groups: ['get']

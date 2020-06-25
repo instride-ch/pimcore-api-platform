@@ -1,0 +1,9 @@
+imports:
+    - { resource: "services/apip.yml" }
+    - { resource: "services/apip_normalizer.yml" }
+    - { resource: "services/apip_graphql.yml" }
+
+services:
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Swagger\SwaggerDecorator:
+        decorates: 'api_platform.swagger.normalizer.api_gateway'
+        arguments: [ '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Swagger\SwaggerDecorator.inner' ]

@@ -1,0 +1,16 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+    - { resource: system.yml }
+    - { resource: 'local/' }
+
+api_platform:
+    mapping:
+        paths:
+            - '%kernel.project_dir%/app/config/api_platform'
+
+    graphql:
+        graphiql:
+            enabled: true
+# ...

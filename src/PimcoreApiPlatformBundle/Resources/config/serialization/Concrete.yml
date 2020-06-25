@@ -1,0 +1,15 @@
+Pimcore\Model\DataObject\Concrete:
+    attributes:
+        published:
+            groups: ['get']
+        class:
+            groups: ['get']
+        classId:
+            groups: ['get']
+        className:
+            groups: ['get']
+        versions:
+            groups: ['get']
+        scheduledTasks:
+            groups: ['get']
+

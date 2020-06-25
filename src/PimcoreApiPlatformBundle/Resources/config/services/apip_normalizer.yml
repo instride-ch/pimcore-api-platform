@@ -1,0 +1,22 @@
+services:
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Normalizer\AssetNormalizer:
+        arguments:
+            - '@serializer.normalizer.object'
+        tags:
+            - { name: serializer.normalizer }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Normalizer\ConcreteNormalizer:
+        arguments:
+            - '@api_platform.metadata.resource.metadata_factory'
+        tags:
+            - { name: serializer.normalizer, priority: 64 }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Normalizer\BrickNormalizer:
+        arguments:
+            - '@serializer.normalizer.object'
+        tags:
+            - { name: serializer.normalizer, priority: 64 }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Normalizer\LocalizedfieldNormalizer:
+        tags:
+            - { name: serializer.normalizer, priority: 64 }

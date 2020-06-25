@@ -1,0 +1,60 @@
+version: '3.4'
+services:
+  db:
+    image: mariadb:10.1
+    container_name: pimcore-api-platform-mariadb
+    working_dir: /application
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci, --innodb_file_format=Barracuda, --innodb_large_prefix=1, --innodb_file_per_table=1]
+    ports:
+     - "3306:3306"
+    volumes:
+      - pimcore-api-platform-database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=ROOT
+      - MYSQL_DATABASE=pimcore
+      - MYSQL_USER=pimcore
+      - MYSQL_PASSWORD=pimcore
+
+  adminer:
+    image: adminer
+    ports:
+      - 2002:8080
+
+  php:
+    image: pimcore/pimcore:PHP7.4-apache
+    container_name: pimcore-api-platform-php
+    volumes:
+      - .:/var/www/html:cached
+    ports:
+     - "2000:80"
+     - "2001:443"
+    depends_on:
+     - db
+
+  php-debug:
+    image: pimcore/pimcore:PHP7.4-apache-debug
+    container_name: pimcore-api-platform-debug-php
+    volumes:
+      - .:/var/www/html:cached
+    ports:
+     - "2006:80"
+    depends_on:
+      - db
+    environment:
+      - PHP_DEBUG=1
+      - PHP_IDE_CONFIG="serverName=localhost"
+
+  php-test:
+    image: pimcore/pimcore:PHP7.4-apache-test
+    container_name: pimcore-api-platform-test-php
+    environment:
+      - PANTHER_WEB_SERVER_DIR="./web"
+    volumes:
+      - .:/var/www/html:cached
+    ports:
+     - "2008:80"
+    depends_on:
+      - db
+
+volumes:
+  pimcore-api-platform-database:

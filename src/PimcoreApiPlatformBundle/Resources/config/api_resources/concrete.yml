@@ -1,0 +1,11 @@
+resources:
+    Pimcore\Model\DataObject\Concrete:
+        shortName: 'DataObject_Concrete'
+        attributes:
+            normalization_context:
+                groups: ['get']
+            denormalization_context:
+                groups: ['set']
+        properties:
+            id:
+                identifier: true

@@ -1,0 +1,62 @@
+services:
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\DataObjectCollectionDataProvider:
+        arguments:
+            - !tagged_iterator api_platform.pimcore.query_extension.collection
+        tags:
+            - { name: api_platform.collection_data_provider }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\AssetCollectionDataProvider:
+        arguments:
+            - !tagged_iterator api_platform.pimcore.query_extension.collection
+        tags:
+            - { name: api_platform.collection_data_provider }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\ElementDataProvider:
+        tags:
+            - { name: api_platform.item_data_provider }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\DataObjectPropertyMetadataFactory:
+        decorates: 'api_platform.metadata.property.metadata_factory'
+        decoration_priority: 35
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\DataObjectPropertyMetadataFactory.inner'
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\ElementMetadataFactory:
+        decorates: 'api_platform.metadata.property.metadata_factory'
+        decoration_priority: 35
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\ElementMetadataFactory.inner'
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\DataObjectPropertyNameCollectionFactory:
+        decorates: 'api_platform.metadata.property.name_collection_factory'
+        decoration_priority: 40
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\DataObjectPropertyNameCollectionFactory.inner'
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\AssetPropertyMetadataFactory:
+        decorates: 'api_platform.metadata.property.metadata_factory'
+        decoration_priority: 35
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\AssetPropertyMetadataFactory.inner'
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\AssetPropertyNameCollectionFactory:
+        decorates: 'api_platform.metadata.property.name_collection_factory'
+        decoration_priority: 40
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\AssetPropertyNameCollectionFactory.inner'
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\ConcretePropertyMetadataFactory:
+        decorates: 'api_platform.metadata.property.metadata_factory'
+        decoration_priority: 35
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\ConcretePropertyMetadataFactory.inner'
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\ElementDataPersister:
+        tags:
+            - { name: api_platform.data_persister, priority: -1000 }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\PaginationExtension:
+        arguments:
+            - '@api_platform.pagination'
+        tags:
+            - { name: api_platform.pimcore.query_extension.collection }

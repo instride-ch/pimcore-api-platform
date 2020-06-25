@@ -1,0 +1,21 @@
+resources:
+    Pimcore\Model\Property:
+        shortName: 'Property'
+        attributes:
+            pagination_enabled: false
+            normalization_context:
+                groups: ['get']
+            denormalization_context:
+                groups: ['set']
+        collectionOperations: []
+        itemOperations:
+            get:
+                method: get
+                controller: NopeController
+        properties:
+            cid:
+                identifier: true
+            ctype:
+                identifier: true
+            name:
+                identifier: true
