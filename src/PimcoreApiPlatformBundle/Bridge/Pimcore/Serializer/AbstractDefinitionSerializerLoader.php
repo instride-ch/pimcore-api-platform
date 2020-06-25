@@ -16,34 +16,29 @@ namespace Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Serializer;
 
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Fieldcollection\Definition;
+use Pimcore\Model\DataObject\Objectbrick;
 use Symfony\Component\Serializer\Mapping\AttributeMetadata;
 use Symfony\Component\Serializer\Mapping\ClassMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Loader\LoaderInterface;
 
-class ClassDefinitionSerializerLoader extends AbstractPimcoreDefinitionSerializerLoader
+abstract class AbstractDefinitionSerializerLoader extends AbstractPimcoreDefinitionSerializerLoader
 {
-    public function loadClassMetadata(ClassMetadataInterface $classMetadata)
+    public function loadFromDefinition(ClassMetadataInterface $classMetadata, Definition $definition, array $defaultFields = ['type'])
     {
-        $class = $classMetadata->getName();
-
-        if (!is_subclass_of($class, Concrete::class)) {
-            return $classMetadata;
-        }
-
-        $class = ClassDefinition::getById($class::classId());
-
-        if (!$class) {
-            return $classMetadata;
-        }
-
         $localizedFieldDefs = [];
-        $localizedFields = $class->getFieldDefinition('localizedfields');
+        $localizedFields = $definition->getFieldDefinition('localizedfields');
 
         if ($localizedFields instanceof ClassDefinition\Data\Localizedfields) {
             $localizedFieldDefs = $localizedFields->getFieldDefinitions();
         }
 
-        foreach ([$class->getFieldDefinitions(), $localizedFieldDefs] as $fieldDefinitions) {
+        foreach ($defaultFields as $defaultField) {
+            $this->addMetadata($classMetadata, $defaultField);
+        }
+
+
+        foreach ([$definition->getFieldDefinitions(), $localizedFieldDefs] as $fieldDefinitions) {
             foreach ($fieldDefinitions as $fieldDefinition) {
                 if ($fieldDefinition instanceof ClassDefinition\Data\Localizedfields) {
                     foreach ($fieldDefinition->getFieldDefinitions() as $subDefinition) {
@@ -56,5 +51,18 @@ class ClassDefinitionSerializerLoader extends AbstractPimcoreDefinitionSerialize
         }
 
         return $classMetadata;
+    }
+
+    protected function addMetadata(ClassMetadataInterface $classMetadata, $name)
+    {
+        $attributesMetadata = $classMetadata->getAttributesMetadata();
+
+        if (!isset($attributesMetadata[$name])) {
+            $attributesMetadata[$name] = new AttributeMetadata($name);
+            $classMetadata->addAttributeMetadata($attributesMetadata[$name]);
+        }
+
+        $attributesMetadata[$name]->addGroup('get');
+        $attributesMetadata[$name]->addGroup('set');
     }
 }

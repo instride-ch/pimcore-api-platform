@@ -17,7 +17,10 @@ namespace Wvision\Bundle\PimcoreApiPlatformBundle\DependencyInjection\CompilerPa
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Serializer\BrickContainerSerializationLoader;
+use Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Serializer\BrickDefinitionSerializerLoader;
 use Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Serializer\ClassDefinitionSerializerLoader;
+use Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Serializer\FieldCollectionDefinitionSerializerLoader;
 
 class SerializerLoaderPass implements CompilerPassInterface
 {
@@ -26,12 +29,19 @@ class SerializerLoaderPass implements CompilerPassInterface
         $chainLoader = $container->findDefinition('serializer.mapping.chain_loader');
         $serializerLoaders = $chainLoader->getArgument(0);
 
-        $pimcoreLoader = new Definition(
-            ClassDefinitionSerializerLoader::class
-        );
-        $pimcoreLoader->setPublic(false);
+        $loaderClasses = [
+            ClassDefinitionSerializerLoader::class,
+            BrickDefinitionSerializerLoader::class,
+            FieldCollectionDefinitionSerializerLoader::class,
+            BrickContainerSerializationLoader::class,
+        ];
 
-        $serializerLoaders[] = $pimcoreLoader;
+        foreach ($loaderClasses as $loader) {
+            $loaderDef = new Definition($loader);
+            $loaderDef->setPublic(false);
+
+            $serializerLoaders[] = $loaderDef;
+        }
 
         $chainLoader->replaceArgument(0, $serializerLoaders);
     }

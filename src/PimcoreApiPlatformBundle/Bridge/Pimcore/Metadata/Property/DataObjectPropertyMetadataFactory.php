@@ -112,6 +112,27 @@ final class DataObjectPropertyMetadataFactory implements PropertyMetadataFactory
 
             $propertyMetadata = $propertyMetadata->withType($containerType);
         }
+        elseif ($fieldDefinition instanceof ClassDefinition\Data\Fieldcollections) {
+            $types = [];
+
+            $allowedCollections = $fieldDefinition->getAllowedTypes();
+
+            if (count($allowedCollections) === 1) {
+                $className = sprintf('Pimcore\Model\DataObject\Fieldcollection\Data\%s', ucfirst($allowedCollections[0]));
+                $classType = new Type(Type::BUILTIN_TYPE_OBJECT, false, $className);
+
+                $propertyMetadata = $propertyMetadata->withType(new Type(Type::BUILTIN_TYPE_ARRAY, true, null, true, new Type(Type::BUILTIN_TYPE_ARRAY), $classType));
+            }
+            else {
+                foreach ($allowedCollections as $item) {
+                    $className = sprintf('Pimcore\Model\DataObject\Fieldcollection\Data\%s', ucfirst($item));
+
+                    $types[] = new Type(Type::BUILTIN_TYPE_OBJECT, true, $className);
+                }
+
+                $propertyMetadata = $propertyMetadata->withType(new UnionType($types));
+            }
+        }
 
         $propertyMetadata = $propertyMetadata->withDescription($fieldDefinition->getTitle());
 
