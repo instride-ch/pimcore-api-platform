@@ -46,5 +46,5 @@ var
 composer.lock
 app/config/local/
 app/config/pimcore/
-app/config/app_platform
-config
+app/config/api_platform
+config/serializer

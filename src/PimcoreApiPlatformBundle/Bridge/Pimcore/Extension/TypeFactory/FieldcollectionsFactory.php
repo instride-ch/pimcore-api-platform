@@ -43,6 +43,7 @@ class FieldcollectionsFactory implements DataObjectFieldTypeMetadataFactoryInter
         }
 
         $propertyMetadata = $propertyMetadata->withType(new UnionType($types, true, Fieldcollection::class));
+        $propertyMetadata = $propertyMetadata->withReadableLink(true);
 
         return $propertyMetadata;
     }
