@@ -15,17 +15,19 @@
 namespace Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Serializer;
 
 use Pimcore\Model\DataObject\ClassDefinition;
-use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Fieldcollection\Definition;
-use Pimcore\Model\DataObject\Objectbrick;
 use Symfony\Component\Serializer\Mapping\AttributeMetadata;
 use Symfony\Component\Serializer\Mapping\ClassMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Loader\LoaderInterface;
 
-abstract class AbstractDefinitionSerializerLoader extends AbstractPimcoreDefinitionSerializerLoader
+abstract class AbstractDefinitionSerializerLoader implements LoaderInterface
 {
-    public function loadFromDefinition(ClassMetadataInterface $classMetadata, Definition $definition, array $defaultFields = ['type'])
-    {
+    public function loadFromDefinition(
+        ClassMetadataInterface $classMetadata,
+        Definition $definition,
+        array $allowedClasses,
+        array $defaultFields = ['type']
+    ) {
         $localizedFieldDefs = [];
         $localizedFields = $definition->getFieldDefinition('localizedfields');
 
@@ -34,7 +36,7 @@ abstract class AbstractDefinitionSerializerLoader extends AbstractPimcoreDefinit
         }
 
         foreach ($defaultFields as $defaultField) {
-            $this->addMetadata($classMetadata, $defaultField);
+            $this->addMetadata($classMetadata, $allowedClasses, $defaultField);
         }
 
 
@@ -42,18 +44,18 @@ abstract class AbstractDefinitionSerializerLoader extends AbstractPimcoreDefinit
             foreach ($fieldDefinitions as $fieldDefinition) {
                 if ($fieldDefinition instanceof ClassDefinition\Data\Localizedfields) {
                     foreach ($fieldDefinition->getFieldDefinitions() as $subDefinition) {
-                        $this->addMetadata($classMetadata, $subDefinition->getName());
+                        $this->addMetadata($classMetadata, $allowedClasses, $subDefinition->getName());
                     }
                 }
 
-                $this->addMetadata($classMetadata, $fieldDefinition->getName());
+                $this->addMetadata($classMetadata, $allowedClasses, $fieldDefinition->getName());
             }
         }
 
         return $classMetadata;
     }
 
-    protected function addMetadata(ClassMetadataInterface $classMetadata, $name)
+    protected function addMetadata(ClassMetadataInterface $classMetadata, array $allowedClasses, $name)
     {
         $attributesMetadata = $classMetadata->getAttributesMetadata();
 
@@ -62,7 +64,17 @@ abstract class AbstractDefinitionSerializerLoader extends AbstractPimcoreDefinit
             $classMetadata->addAttributeMetadata($attributesMetadata[$name]);
         }
 
-        $attributesMetadata[$name]->addGroup('get');
-        $attributesMetadata[$name]->addGroup('set');
+        foreach (AbstractPimcoreDefinitionSerializerLoader::DEFAULT_READ_GROUPS as $defaultGroup) {
+            $attributesMetadata[$name]->addGroup($defaultGroup);
+        }
+
+        foreach (AbstractPimcoreDefinitionSerializerLoader::DEFAULT_WRITE_GROUPS as $defaultGroup) {
+            $attributesMetadata[$name]->addGroup($defaultGroup);
+        }
+
+        foreach ($allowedClasses as $className) {
+            $attributesMetadata[$name]->addGroup(strtolower($className).':read');
+            $attributesMetadata[$name]->addGroup(strtolower($className).':write');
+        }
     }
 }

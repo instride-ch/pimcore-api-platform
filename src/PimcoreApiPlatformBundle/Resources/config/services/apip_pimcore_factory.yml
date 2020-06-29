@@ -1,0 +1,40 @@
+services:
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\InputTypeFactory:
+        tags:
+            - { name: w-vision.api.pimcore_type_factory }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\TextareaTypeFactory:
+        tags:
+            - { name: w-vision.api.pimcore_type_factory }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\WysiwygTypeFactory:
+        tags:
+            - { name: w-vision.api.pimcore_type_factory }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\PasswordTypeFactory:
+        tags:
+            - { name: w-vision.api.pimcore_type_factory }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\ImageTypeFactory:
+        tags:
+            - { name: w-vision.api.pimcore_type_factory }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\FieldcollectionsFactory:
+        tags:
+            - { name: w-vision.api.pimcore_type_factory }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\ManyToManyObjectRelationFactory:
+        tags:
+            - { name: w-vision.api.pimcore_type_factory }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\ObjectbricksFactory:
+        tags:
+            - { name: w-vision.api.pimcore_type_factory }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\QuantityTypeFactory:
+        tags:
+            - { name: w-vision.api.pimcore_type_factory }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\BlockFactory:
+        tags:
+            - { name: w-vision.api.pimcore_type_factory }

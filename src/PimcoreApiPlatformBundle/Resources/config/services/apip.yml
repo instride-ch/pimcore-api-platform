@@ -15,11 +15,16 @@ services:
         tags:
             - { name: api_platform.item_data_provider }
 
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\DataObjectFieldTypeMetadataFactory:
+        arguments:
+            - !tagged_iterator w-vision.api.pimcore_type_factory
+
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\DataObjectPropertyMetadataFactory:
         decorates: 'api_platform.metadata.property.metadata_factory'
         decoration_priority: 35
         arguments:
             - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\DataObjectPropertyMetadataFactory.inner'
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\DataObjectFieldTypeMetadataFactory'
 
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\ElementMetadataFactory:
         decorates: 'api_platform.metadata.property.metadata_factory'
@@ -32,6 +37,24 @@ services:
         decoration_priority: 40
         arguments:
             - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\DataObjectPropertyNameCollectionFactory.inner'
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\FieldCollectionPropertyNameCollectionFactory:
+        decorates: 'api_platform.metadata.property.name_collection_factory'
+        decoration_priority: 40
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\FieldCollectionPropertyNameCollectionFactory.inner'
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\BrickContainerPropertyNameCollectionFactory:
+        decorates: 'api_platform.metadata.property.name_collection_factory'
+        decoration_priority: 40
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\BrickContainerPropertyNameCollectionFactory.inner'
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\BrickPropertyNameCollectionFactory:
+        decorates: 'api_platform.metadata.property.name_collection_factory'
+        decoration_priority: 40
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\BrickPropertyNameCollectionFactory.inner'
 
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\AssetPropertyMetadataFactory:
         decorates: 'api_platform.metadata.property.metadata_factory'
@@ -51,6 +74,26 @@ services:
         arguments:
             - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\ConcretePropertyMetadataFactory.inner'
 
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\FieldcollectionPropertyMetadataFactory:
+        decorates: 'api_platform.metadata.property.metadata_factory'
+        decoration_priority: 35
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\FieldcollectionPropertyMetadataFactory.inner'
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\DataObjectFieldTypeMetadataFactory'
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\BrickContainerPropertyMetadataFactory:
+        decorates: 'api_platform.metadata.property.metadata_factory'
+        decoration_priority: 35
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\BrickContainerPropertyMetadataFactory.inner'
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\BrickPropertyMetadataFactory:
+        decorates: 'api_platform.metadata.property.metadata_factory'
+        decoration_priority: 35
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\BrickPropertyMetadataFactory.inner'
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\DataObjectFieldTypeMetadataFactory'
+
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\ElementDataPersister:
         tags:
             - { name: api_platform.data_persister, priority: -1000 }
@@ -60,3 +103,8 @@ services:
             - '@api_platform.pagination'
         tags:
             - { name: api_platform.pimcore.query_extension.collection }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Routing\FieldcollectionIriConverter:
+        decorates: 'ApiPlatform\Core\Api\IriConverterInterface'
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Routing\FieldcollectionIriConverter.inner'

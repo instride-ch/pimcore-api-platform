@@ -14,6 +14,7 @@
 
 namespace Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Swagger;
 
+use ApiPlatform\Core\Documentation\Documentation;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class SwaggerDecorator implements NormalizerInterface

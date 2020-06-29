@@ -23,11 +23,11 @@ class UnionType extends Type
      */
     private $types;
 
-    public function __construct($types)
+    public function __construct($types, bool $nullable = false, string $containerClassName = null)
     {
         $this->types = $types;
 
-        parent::__construct(static::BUILTIN_TYPE_ARRAY);
+        parent::__construct(static::BUILTIN_TYPE_ARRAY, $nullable, $containerClassName);
     }
 
     public function getTypes(): array

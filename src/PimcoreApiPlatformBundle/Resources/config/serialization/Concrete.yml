@@ -1,15 +1,15 @@
 Pimcore\Model\DataObject\Concrete:
     attributes:
         published:
-            groups: ['get']
+            groups: ['read', 'object:read']
         class:
-            groups: ['get']
+            groups: ['read', 'object:read']
         classId:
-            groups: ['get']
+            groups: ['read', 'object:read']
         className:
-            groups: ['get']
+            groups: ['read', 'object:read']
         versions:
-            groups: ['get']
+            groups: ['read', 'object:read']
         scheduledTasks:
-            groups: ['get']
+            groups: ['read', 'object:read']
 

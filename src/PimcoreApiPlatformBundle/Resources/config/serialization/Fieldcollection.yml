@@ -1,0 +1,6 @@
+Pimcore\Model\DataObject\Fieldcollection:
+    attributes:
+        fieldname:
+            identifier: true
+        items:
+            groups: ['read', 'object:read']

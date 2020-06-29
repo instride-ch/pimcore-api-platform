@@ -16,19 +16,26 @@ namespace Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\GraphQl;
 
 use ApiPlatform\Core\GraphQl\Type\TypeConverterInterface;
 use ApiPlatform\Core\GraphQl\Type\TypesContainerInterface;
+use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
 use GraphQL\Type\Definition\Type as GraphQLType;
 use Symfony\Component\PropertyInfo\Type;
 use Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\UnionType;
 
 class TypeConverter implements TypeConverterInterface
 {
+    protected $resourceClassResolver;
     protected $typesContainer;
     protected $inner;
 
-    public function __construct(TypeConverterInterface $inner, TypesContainerInterface $typesContainer)
+    public function __construct(
+        TypeConverterInterface $inner,
+        TypesContainerInterface $typesContainer,
+        ResourceMetadataFactoryInterface $resourceClassResolver
+    )
     {
         $this->inner = $inner;
         $this->typesContainer = $typesContainer;
+        $this->resourceClassResolver = $resourceClassResolver;
     }
 
     public function convertType(
@@ -46,7 +53,8 @@ class TypeConverter implements TypeConverterInterface
                 return null;
             }
 
-            $name = $property.'_elements';
+            $meta = $this->resourceClassResolver->create($rootResource);
+            $name = $meta->getShortName() . '_' . $property . '_elements';
 
             if ($this->typesContainer->has($name)) {
                 return $this->typesContainer->get($name);
@@ -56,8 +64,16 @@ class TypeConverter implements TypeConverterInterface
             $typeCache = [];
 
             foreach ($type->getTypes() as $subType) {
-                $convertedType = $this->inner->convertType($subType, $input, $queryName, $mutationName, $resourceClass,
-                    $rootResource, $property, $depth);
+                $convertedType = $this->inner->convertType(
+                    $subType,
+                    $input,
+                    $queryName,
+                    $mutationName,
+                    $resourceClass,
+                    $rootResource,
+                    $property,
+                    $depth
+                );
 
                 if ($convertedType) {
                     $types[] = $convertedType;
@@ -68,7 +84,7 @@ class TypeConverter implements TypeConverterInterface
             //$containerType = $this->inner->convertType($type, $input, $queryName, $mutationName, $resourceClass, $rootResource, $property, $depth);
 
             $config = [
-                'name' => $property.'_elements',
+                'name' => $name,
                 'types' => $types,
                 'resolveType' => static function ($value) use ($typeCache) {
                     if (!isset($value['#itemResourceClass'])) {
@@ -89,8 +105,16 @@ class TypeConverter implements TypeConverterInterface
             return \GraphQL\Type\Definition\Type::listOf($unionType);
         }
 
-        return $this->inner->convertType($type, $input, $queryName, $mutationName, $resourceClass, $rootResource,
-            $property, $depth);
+        return $this->inner->convertType(
+            $type,
+            $input,
+            $queryName,
+            $mutationName,
+            $resourceClass,
+            $rootResource,
+            $property,
+            $depth
+        );
     }
 
     public function resolveType(string $type): ?GraphQLType

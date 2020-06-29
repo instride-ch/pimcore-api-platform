@@ -47,11 +47,11 @@ class ClassDefinitionSerializerLoader extends AbstractPimcoreDefinitionSerialize
             foreach ($fieldDefinitions as $fieldDefinition) {
                 if ($fieldDefinition instanceof ClassDefinition\Data\Localizedfields) {
                     foreach ($fieldDefinition->getFieldDefinitions() as $subDefinition) {
-                        $this->addMetadata($classMetadata, $subDefinition->getName());
+                        $this->addMetadata($classMetadata, $class->getName(), $subDefinition->getName());
                     }
                 }
 
-                $this->addMetadata($classMetadata, $fieldDefinition->getName());
+                $this->addMetadata($classMetadata, $class->getName(), $fieldDefinition->getName());
             }
         }
 

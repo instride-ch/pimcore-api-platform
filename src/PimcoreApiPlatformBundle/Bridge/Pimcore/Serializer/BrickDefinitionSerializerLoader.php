@@ -33,6 +33,25 @@ class BrickDefinitionSerializerLoader extends AbstractDefinitionSerializerLoader
             return $classMetadata;
         }
 
-        return $this->loadFromDefinition($classMetadata, $tempInstance->getDefinition());
+        $allowedClasses = [];
+        $definition = $tempInstance->getDefinition();
+
+        if (!$definition instanceof Objectbrick\Definition) {
+            return $classMetadata;
+        }
+
+        foreach ($definition->getClassDefinitions() as $classDefinition) {
+            if (!array_key_exists('classname', $classDefinition)) {
+                continue;
+            }
+
+            if (in_array($classDefinition['classname'], $allowedClasses, true)) {
+                continue;
+            }
+
+            $allowedClasses[] = $classDefinition['classname'];
+        }
+
+        return $this->loadFromDefinition($classMetadata, $definition, $allowedClasses);
     }
 }

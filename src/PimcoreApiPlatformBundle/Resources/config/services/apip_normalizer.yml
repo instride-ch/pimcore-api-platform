@@ -17,6 +17,11 @@ services:
         tags:
             - { name: serializer.normalizer, priority: 64 }
 
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Normalizer\FieldcollectionNormalizer:
+        tags:
+            - { name: serializer.normalizer, priority: 64 }
+
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Normalizer\LocalizedfieldNormalizer:
         tags:
             - { name: serializer.normalizer, priority: 64 }
+

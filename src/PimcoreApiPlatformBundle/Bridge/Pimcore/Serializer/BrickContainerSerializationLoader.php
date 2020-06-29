@@ -39,13 +39,31 @@ class BrickContainerSerializationLoader implements LoaderInterface
         $attributesMetadata = $classMetadata->getAttributesMetadata();
 
         foreach ($getters as $getter) {
+            $getter = substr($getter, 3);
+
+            $definition = Objectbrick\Definition::getByKey($getter);
+
+            if (!$definition) {
+                continue;
+            }
+
             if (!isset($attributesMetadata[$getter])) {
                 $attributesMetadata[$getter] = new AttributeMetadata($getter);
                 $classMetadata->addAttributeMetadata($attributesMetadata[$getter]);
             }
 
-            $attributesMetadata[$getter]->addGroup('get');
-            $attributesMetadata[$getter]->addGroup('set');
+            foreach (AbstractPimcoreDefinitionSerializerLoader::DEFAULT_READ_GROUPS as $defaultGroup) {
+                $attributesMetadata[$getter]->addGroup($defaultGroup);
+            }
+
+            foreach (AbstractPimcoreDefinitionSerializerLoader::DEFAULT_WRITE_GROUPS as $defaultGroup) {
+                $attributesMetadata[$getter]->addGroup($defaultGroup);
+            }
+
+            foreach ($definition->getClassDefinitions() as $classDefinition) {
+                $attributesMetadata[$getter]->addGroup(strtolower($classDefinition['classname']).':read');
+                $attributesMetadata[$getter]->addGroup(strtolower($classDefinition['classname']).':write');
+            }
         }
 
         return $classMetadata;

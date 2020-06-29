@@ -14,3 +14,7 @@ api_platform:
         graphiql:
             enabled: true
 # ...
+
+framework:
+    profiler:
+        enabled: false

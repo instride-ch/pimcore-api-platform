@@ -16,15 +16,10 @@ namespace Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Proper
 
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Property\PropertyMetadata;
-use Pimcore\Model\Asset\Image;
-use Pimcore\Model\DataObject\AbstractObject;
-use Pimcore\Model\DataObject\ClassDefinition;
-use Pimcore\Model\DataObject\Concrete;
-use Symfony\Component\PropertyInfo\Type;
+use Pimcore\Model\DataObject\Objectbrick\Data\AbstractData;
 use Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\DataObjectFieldTypeMetadataFactory;
-use Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\UnionType;
 
-final class DataObjectPropertyMetadataFactory extends AbstractDefinitionPropertyMetadataFactory
+final class BrickPropertyMetadataFactory extends AbstractDefinitionPropertyMetadataFactory
 {
     private $decorated;
 
@@ -45,36 +40,33 @@ final class DataObjectPropertyMetadataFactory extends AbstractDefinitionProperty
     {
         $propertyMetadata = $this->decorated->create($resourceClass, $property, $options);
 
-        if (!is_subclass_of($resourceClass, Concrete::class)) {
+        if (!is_subclass_of($resourceClass, AbstractData::class)) {
             return $propertyMetadata;
         }
 
-        if ($property === 'id') {
+        $identifiers = ['fieldName', 'object', 'type'];
+
+        if (in_array($property, $identifiers, true)) {
             $propertyMetadata = $propertyMetadata->withIdentifier(true);
 
-            if (null !== $propertyMetadata->isWritable()) {
-                return $propertyMetadata;
-            }
-
-            $propertyMetadata = $propertyMetadata->withWritable(false);
-        }
-
-        if (null === $propertyMetadata->isIdentifier()) {
-            $propertyMetadata = $propertyMetadata->withIdentifier(false);
-        }
-
-        $class = ClassDefinition::getById($resourceClass::classId());
-
-        if (!$class) {
             return $propertyMetadata;
         }
 
-        $fieldDefinition = $class->getFieldDefinition($property);
+        $reflectionClass = new \ReflectionClass($resourceClass);
+        $tempInstance = $reflectionClass->newInstanceWithoutConstructor();
+
+        if (!$tempInstance instanceof AbstractData) {
+            return $propertyMetadata;
+        }
+
+        $definition = $tempInstance->getDefinition();
+
+        $fieldDefinition = $definition->getFieldDefinition($property);
 
         if (!$fieldDefinition) {
             return $propertyMetadata;
         }
 
-        return $this->processPimcoreProperty($class, $fieldDefinition, $propertyMetadata);
+        return $this->processPimcoreProperty($definition, $fieldDefinition, $propertyMetadata);
     }
 }

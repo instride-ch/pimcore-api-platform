@@ -1,4 +1,4 @@
 Pimcore\Model\DataObject\Localizedfield:
     attributes:
         items:
-            groups: ['get']
+            groups: ['read', 'object:read']

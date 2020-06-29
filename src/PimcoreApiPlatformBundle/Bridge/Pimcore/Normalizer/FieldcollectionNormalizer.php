@@ -14,30 +14,34 @@
 
 namespace Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Normalizer;
 
-use Pimcore\Model\DataObject\Objectbrick;
+use ApiPlatform\Core\Util\ClassInfoTrait;
+use Pimcore\Model\DataObject\Fieldcollection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class BrickNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class FieldcollectionNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface, NormalizerAwareInterface
 {
-    private $normalizer;
-
-    public function __construct(ObjectNormalizer $normalizer)
-    {
-        $this->normalizer = $normalizer;
-    }
+    use NormalizerAwareTrait;
+    use ClassInfoTrait;
 
     public function normalize($object, $format = null, array $context = array()): array
     {
-        $context['iri'] = 'brick';
+        $items = [];
 
-        return $this->normalizer->normalize($object, $format, $context);
+        foreach ($object->getItems() as $item) {
+            $item = $this->normalizer->normalize($item, $format, $context);
+
+            $items[] = $item;
+        }
+
+        return $items;
     }
 
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof Objectbrick;
+        return $data instanceof Fieldcollection;
     }
 
     public function hasCacheableSupportsMethod(): bool

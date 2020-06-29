@@ -1,31 +1,31 @@
 Pimcore\Model\DataObject\AbstractObject:
     attributes:
         id:
-            groups: ['get']
+            groups: ['read', 'object:read']
             identifier: true
         properties:
-            groups: ['get']
+            groups: ['read', 'object:read']
         parentId:
-            groups: ['get']
+            groups: ['read', 'object:read']
         type:
-            groups: ['get']
+            groups: ['read', 'object:read']
         key:
-            groups: ['get']
+            groups: ['read', 'object:read']
         path:
-            groups: ['get']
+            groups: ['read', 'object:read']
         index:
-            groups: ['get']
+            groups: ['read', 'object:read']
         creationDate:
-            groups: ['get']
+            groups: ['read', 'object:read']
         modificationDate:
-            groups: ['get']
+            groups: ['read', 'object:read']
         userOwner:
-            groups: ['get']
+            groups: ['read', 'object:read']
         userModification:
-            groups: ['get']
+            groups: ['read', 'object:read']
         dependencies:
-            groups: ['get']
+            groups: ['read', 'object:read']
         locked:
-            groups: ['get']
+            groups: ['read', 'object:read']
         versionCount:
-            groups: ['get']
+            groups: ['read', 'object:read']

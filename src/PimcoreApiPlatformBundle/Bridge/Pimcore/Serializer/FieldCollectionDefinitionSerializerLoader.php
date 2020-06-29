@@ -14,6 +14,7 @@
 
 namespace Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Serializer;
 
+use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection\Data\AbstractData;
 use Symfony\Component\Serializer\Mapping\ClassMetadataInterface;
 
@@ -32,7 +33,35 @@ class FieldCollectionDefinitionSerializerLoader extends AbstractDefinitionSerial
         if (!$tempInstance instanceof AbstractData) {
             return $classMetadata;
         }
+        $definition = $tempInstance->getDefinition();
 
-        return $this->loadFromDefinition($classMetadata, $tempInstance->getDefinition());
+        $allowedClasses = [];
+        $classes = new ClassDefinition\Listing();
+        $classes = $classes->load();
+
+        foreach ($classes as $class) {
+            $fieldDefs = $class->getFieldDefinitions();
+            foreach ($fieldDefs as $fieldDef) {
+                if ($fieldDef instanceof ClassDefinition\Data\Fieldcollections) {
+                    $allowedKeys = $fieldDef->getAllowedTypes();
+
+                    if (!is_array($allowedKeys)) {
+                        continue;
+                    }
+
+                    if (!in_array($definition->getKey(), $allowedKeys, false)) {
+                        continue;
+                    }
+
+                    if (in_array($class->getName(), $allowedClasses, true)) {
+                        continue;
+                    }
+
+                    $allowedClasses[]  = $class->getName();
+                }
+            }
+        }
+
+        return $this->loadFromDefinition($classMetadata, $definition, $allowedClasses);
     }
 }

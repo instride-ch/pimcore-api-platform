@@ -24,7 +24,10 @@ use Symfony\Component\Serializer\Mapping\Loader\LoaderInterface;
 
 abstract class AbstractPimcoreDefinitionSerializerLoader implements LoaderInterface
 {
-    protected function addMetadata(ClassMetadataInterface $classMetadata, $name)
+    const DEFAULT_READ_GROUPS = ['read', 'object:read'];
+    const DEFAULT_WRITE_GROUPS = ['write', 'object:read'];
+
+    protected function addMetadata(ClassMetadataInterface $classMetadata, $className, $name)
     {
         $attributesMetadata = $classMetadata->getAttributesMetadata();
 
@@ -33,7 +36,15 @@ abstract class AbstractPimcoreDefinitionSerializerLoader implements LoaderInterf
             $classMetadata->addAttributeMetadata($attributesMetadata[$name]);
         }
 
-        $attributesMetadata[$name]->addGroup('get');
-        $attributesMetadata[$name]->addGroup('set');
+        foreach (self::DEFAULT_READ_GROUPS as $defaultGroup) {
+            $attributesMetadata[$name]->addGroup($defaultGroup);
+        }
+
+        foreach (self::DEFAULT_WRITE_GROUPS as $defaultGroup) {
+            $attributesMetadata[$name]->addGroup($defaultGroup);
+        }
+
+        $attributesMetadata[$name]->addGroup(strtolower($className).':read');
+        $attributesMetadata[$name]->addGroup(strtolower($className).':write');
     }
 }

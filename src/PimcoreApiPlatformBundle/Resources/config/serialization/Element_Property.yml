@@ -1,19 +1,19 @@
 Pimcore\Model\Property:
     attributes:
         name:
-            groups: ['get']
+            groups: ['read', 'object:read']
         data:
-            groups: ['get']
+            groups: ['read', 'object:read']
         type:
-            groups: ['get']
+            groups: ['read', 'object:read']
         ctype:
-            groups: ['get']
+            groups: ['read', 'object:read']
         cpath:
-            groups: ['get']
+            groups: ['read', 'object:read']
         cid:
-            groups: ['get']
+            groups: ['read', 'object:read']
         inheritable:
-            groups: ['get']
+            groups: ['read', 'object:read']
         inherited:
-            groups: ['get']
+            groups: ['read', 'object:read']
 

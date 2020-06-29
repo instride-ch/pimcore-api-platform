@@ -1,0 +1,8 @@
+Pimcore\Model\DataObject\BlockElement:
+    attributes:
+        name:
+            groups: ['read', 'object:read']
+        type:
+            groups: ['read', 'object:read']
+        data:
+            groups: ['read', 'object:read']
