@@ -16,13 +16,14 @@ namespace Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore;
 
 use ApiPlatform\Core\DataProvider\DenormalizedIdentifiersAwareItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Element\ElementInterface;
 
 final class ElementDataProvider implements DenormalizedIdentifiersAwareItemDataProviderInterface, RestrictedDataProviderInterface
 {
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
-        return is_subclass_of($resourceClass, ElementInterface::class);
+        return is_subclass_of($resourceClass, ElementInterface::class) && !is_subclass_of($resourceClass, Concrete::class);
     }
 
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])

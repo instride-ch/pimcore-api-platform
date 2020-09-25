@@ -28,12 +28,25 @@ class FieldCollectionDefinitionSerializerLoader extends AbstractDefinitionSerial
             return $classMetadata;
         }
 
+        if ($classMetadata->getReflectionClass()->isAbstract()) {
+            return $classMetadata;
+        }
+
+        if (false === strpos('Pimcore\\Model\\DataObject\\Fieldcollection\\Data\\', $class)) {
+            return $classMetadata;
+        }
+
         $tempInstance = $classMetadata->getReflectionClass()->newInstanceWithoutConstructor();
 
         if (!$tempInstance instanceof AbstractData) {
             return $classMetadata;
         }
+
         $definition = $tempInstance->getDefinition();
+
+        if (!$definition) {
+            return $classMetadata;
+        }
 
         $allowedClasses = [];
         $classes = new ClassDefinition\Listing();

@@ -24,7 +24,16 @@ class ObjectbricksFactory implements DataObjectFieldTypeMetadataFactoryInterface
 {
     public function supports($classDefinition, Data $fieldDefinition): bool
     {
-        return $classDefinition instanceof ClassDefinition && $fieldDefinition instanceof Data\Objectbricks;
+        if ($classDefinition instanceof ClassDefinition && $fieldDefinition instanceof Data\Objectbricks) {
+            $class = sprintf('Pimcore\Model\DataObject\%s\%s',
+                ucfirst($classDefinition->getName()),
+                ucfirst($fieldDefinition->getName())
+            );
+
+            return class_exists($class);
+        }
+
+        return false;
     }
 
     public function create(

@@ -15,6 +15,10 @@ services:
         tags:
             - { name: api_platform.item_data_provider }
 
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\DataObjectFilterProvider:
+        tags:
+            - { name: api_platform.item_data_provider }
+
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\DataObjectFieldTypeMetadataFactory:
         arguments:
             - !tagged_iterator w-vision.api.pimcore_type_factory
@@ -25,6 +29,7 @@ services:
         arguments:
             - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\DataObjectPropertyMetadataFactory.inner'
             - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\DataObjectFieldTypeMetadataFactory'
+            - '@api_platform.metadata.extractor.yaml'
 
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\ElementMetadataFactory:
         decorates: 'api_platform.metadata.property.metadata_factory'

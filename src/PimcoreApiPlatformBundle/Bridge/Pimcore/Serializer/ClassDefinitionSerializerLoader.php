@@ -30,6 +30,11 @@ class ClassDefinitionSerializerLoader extends AbstractPimcoreDefinitionSerialize
             return $classMetadata;
         }
 
+        // If not directly a Pimcore DataObject Class (eg. parent classAdditionalData
+        if (false === strpos('Pimcore\\Model\\DataObject', $class)) {
+            return $classMetadata;
+        }
+
         $class = ClassDefinition::getById($class::classId());
 
         if (!$class) {

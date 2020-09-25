@@ -14,28 +14,28 @@
 
 namespace Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property;
 
+use ApiPlatform\Core\Metadata\Extractor\ExtractorInterface;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Property\PropertyMetadata;
-use Pimcore\Model\Asset\Image;
-use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
-use Symfony\Component\PropertyInfo\Type;
 use Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\DataObjectFieldTypeMetadataFactory;
-use Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\UnionType;
 
 final class DataObjectPropertyMetadataFactory extends AbstractDefinitionPropertyMetadataFactory
 {
     private $decorated;
+    private $extractor;
 
     public function __construct(
         PropertyMetadataFactoryInterface $decorated,
-        DataObjectFieldTypeMetadataFactory $pimcoreTypeFactory
+        DataObjectFieldTypeMetadataFactory $pimcoreTypeFactory,
+        ExtractorInterface $extractor
     )
     {
         parent::__construct($pimcoreTypeFactory);
 
         $this->decorated = $decorated;
+        $this->extractor = $extractor;
     }
 
     /**
@@ -43,6 +43,9 @@ final class DataObjectPropertyMetadataFactory extends AbstractDefinitionProperty
      */
     public function create(string $resourceClass, string $property, array $options = []): PropertyMetadata
     {
+        /**
+         * @var PropertyMetadata $propertyMetadata
+         */
         $propertyMetadata = $this->decorated->create($resourceClass, $property, $options);
 
         if (!is_subclass_of($resourceClass, Concrete::class)) {
@@ -50,7 +53,32 @@ final class DataObjectPropertyMetadataFactory extends AbstractDefinitionProperty
         }
 
         if ($property === 'id') {
-            $propertyMetadata = $propertyMetadata->withIdentifier(true);
+            $metadata = $this->extractor->getResources()[$resourceClass]['properties'][$property] ?? null;
+
+            if (null === $metadata) {
+                $propertyMetadata = $propertyMetadata->withIdentifier(true);
+            }
+            else {
+                $metadataAccessors = [
+                    'description' => 'get',
+                    'readable' => 'is',
+                    'writable' => 'is',
+                    'writableLink' => 'is',
+                    'readableLink' => 'is',
+                    'required' => 'is',
+                    'identifier' => 'is',
+                    'iri' => 'get',
+                    'attributes' => 'get',
+                ];
+
+                foreach ($metadataAccessors as $metadataKey => $accessorPrefix) {
+                    if (null === $metadata[$metadataKey]) {
+                        continue;
+                    }
+
+                    $propertyMetadata = $propertyMetadata->{'with'.ucfirst($metadataKey)}($metadata[$metadataKey]);
+                }
+            }
 
             if (null !== $propertyMetadata->isWritable()) {
                 return $propertyMetadata;
