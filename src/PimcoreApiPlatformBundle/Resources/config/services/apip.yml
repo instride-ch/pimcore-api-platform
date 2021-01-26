@@ -11,11 +11,31 @@ services:
         tags:
             - { name: api_platform.collection_data_provider }
 
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\TagsCollectionDataProvider:
+        arguments:
+            - !tagged_iterator api_platform.pimcore.query_extension.collection
+        tags:
+            - { name: api_platform.collection_data_provider }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\NotesCollectionDataProvider:
+        arguments:
+            - !tagged_iterator api_platform.pimcore.query_extension.collection
+        tags:
+            - { name: api_platform.collection_data_provider }
+
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\ElementDataProvider:
         tags:
             - { name: api_platform.item_data_provider }
 
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\DataObjectFilterProvider:
+        tags:
+            - { name: api_platform.item_data_provider }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\TagDataProvider:
+        tags:
+            - { name: api_platform.item_data_provider }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\NoteDataProvider:
         tags:
             - { name: api_platform.item_data_provider }
 
@@ -107,7 +127,7 @@ services:
         arguments:
             - '@api_platform.pagination'
         tags:
-            - { name: api_platform.pimcore.query_extension.collection }
+            - { name: api_platform.pimcore.query_extension.collection, priority: -1000 }
 
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Routing\FieldcollectionIriConverter:
         decorates: 'ApiPlatform\Core\Api\IriConverterInterface'

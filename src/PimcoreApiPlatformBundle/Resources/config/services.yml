@@ -3,6 +3,7 @@ imports:
     - { resource: "services/apip_normalizer.yml" }
     - { resource: "services/apip_graphql.yml" }
     - { resource: "services/apip_pimcore_factory.yml" }
+    - { resource: "services/apip_controller.yml" }
 
 services:
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Swagger\SwaggerDecorator:

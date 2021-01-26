@@ -1,0 +1,8 @@
+services:
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Controller\TagsController:
+        tags:
+            - { name: controller.service_arguments }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Controller\NotesController:
+        tags:
+            - { name: controller.service_arguments }

@@ -1,0 +1,77 @@
+api_platform_pimcore_tags_asset:
+    path: /asset/{id}/tags
+    controller: Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Controller\TagsController::getTagsForAssets
+    methods: 'GET'
+    defaults:
+        _api_resource_class: Pimcore\Model\Element\Tag
+        _api_subresource_operation_name: 'get_asset_tags'
+        _api_subresource_context:
+            collection: true
+            property: 'tags'
+            identifiers:
+                - ['id', 'Pimcore\Model\Asset', true]
+
+api_platform_pimcore_tags_object:
+    path: /object/{id}/tags
+    controller: Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Controller\TagsController::getTagsForObjects
+    methods: 'GET'
+    defaults:
+        _api_resource_class: Pimcore\Model\Element\Tag
+        _api_subresource_operation_name: 'get_object_tags'
+        _api_subresource_context:
+            collection: true
+            property: 'tags'
+            identifiers:
+                - ['id', 'Pimcore\Model\DataObject', true]
+
+api_platform_pimcore_tags_document:
+    path: /document/{id}/tags
+    controller: Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Controller\TagsController::getTagsForDocuments
+    methods: 'GET'
+    defaults:
+        _api_resource_class: Pimcore\Model\Element\Tag
+        _api_subresource_operation_name: 'get_document_tags'
+        _api_subresource_context:
+            collection: true
+            property: 'tags'
+            identifiers:
+                - ['id', 'Pimcore\Model\Document', true]
+
+api_platform_pimcore_notes_asset:
+    path: /asset/{id}/notes
+    controller: Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Controller\NotesController::getNotesForAssets
+    methods: 'GET'
+    defaults:
+        _api_resource_class: Pimcore\Model\Element\Note
+        _api_subresource_operation_name: 'get_asset_notes'
+        _api_subresource_context:
+            collection: true
+            property: 'notes'
+            identifiers:
+                - ['id', 'Pimcore\Model\Asset', true]
+
+api_platform_pimcore_notes_object:
+    path: /object/{id}/notes
+    controller: Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Controller\NotesController::getNotesForObjects
+    methods: 'GET'
+    defaults:
+        _api_resource_class: Pimcore\Model\Element\Note
+        _api_subresource_operation_name: 'get_object_notes'
+        _api_subresource_context:
+            collection: true
+            property: 'notes'
+            identifiers:
+                - ['id', 'Pimcore\Model\DataObject', true]
+
+api_platform_pimcore_notes_document:
+    path: /document/{id}/notes
+    controller: Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Controller\NotesController::getNotesForDocuments
+    methods: 'GET'
+    defaults:
+        _api_resource_class: Pimcore\Model\Element\Note
+        _api_subresource_operation_name: 'get_document_notes'
+        _api_subresource_context:
+            collection: true
+            property: 'notes'
+            identifiers:
+                - ['id', 'Pimcore\Model\Document', true]
