@@ -2,6 +2,7 @@ services:
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Normalizer\AssetNormalizer:
         arguments:
             - '@serializer.normalizer.object'
+            - '@request_stack'
         tags:
             - { name: serializer.normalizer }
 

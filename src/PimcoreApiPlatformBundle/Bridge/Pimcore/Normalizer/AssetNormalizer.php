@@ -15,6 +15,8 @@
 namespace Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Normalizer;
 
 use Pimcore\Model\Asset;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -22,10 +24,12 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class AssetNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     private $normalizer;
+    private $requestStack;
 
-    public function __construct(ObjectNormalizer $normalizer)
+    public function __construct(ObjectNormalizer $normalizer, RequestStack $requestStack)
     {
         $this->normalizer = $normalizer;
+        $this->requestStack = $requestStack;
     }
 
     public function normalize($object, $format = null, array $context = array()): array
@@ -34,6 +38,10 @@ class AssetNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
 
         if (isset($data['data']) && $data['data']) {
             $data['data'] = base64_encode($data['data']);
+        }
+
+        if ($object instanceof Asset\Image && $this->requestStack->getMasterRequest()->get('thumbnail', null)) {
+            $data['thumbnail'] = $object->getThumbnail($this->requestStack->getMasterRequest()->get('thumbnail'))->getPath(true);
         }
 
         return $data;

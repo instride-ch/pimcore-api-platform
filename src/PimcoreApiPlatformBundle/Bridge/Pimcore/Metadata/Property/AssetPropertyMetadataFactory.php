@@ -55,6 +55,7 @@ final class AssetPropertyMetadataFactory implements PropertyMetadataFactoryInter
 
         switch ($property) {
             case 'fullPath':
+            case 'thumbnail':
             case 'data':
                 $propertyMetadata = $propertyMetadata->withType(new Type(Type::BUILTIN_TYPE_STRING));
                 break;

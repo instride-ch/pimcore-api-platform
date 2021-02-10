@@ -55,6 +55,10 @@ final class AssetPropertyNameCollectionFactory implements PropertyNameCollection
             $properties['data'] = true;
         }
 
+        if ($resourceClass === Asset\Image::class) {
+            $properties['thumbnail'] = true;
+        }
+
         return new PropertyNameCollection(array_keys($properties));
     }
 }
