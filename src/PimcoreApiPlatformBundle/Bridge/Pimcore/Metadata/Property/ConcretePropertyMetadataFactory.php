@@ -34,7 +34,7 @@ final class ConcretePropertyMetadataFactory implements PropertyMetadataFactoryIn
     {
         $propertyMetadata = $this->decorated->create($resourceClass, $property, $options);
 
-        if ($resourceClass !== Concrete::class) {
+        if (!is_a($resourceClass, Concrete::class, true)) {
             return $propertyMetadata;
         }
 

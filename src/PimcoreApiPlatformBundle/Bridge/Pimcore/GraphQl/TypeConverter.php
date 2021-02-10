@@ -43,6 +43,7 @@ class TypeConverter implements TypeConverterInterface
         bool $input,
         ?string $queryName,
         ?string $mutationName,
+        ?string $subscriptionName,
         string $resourceClass,
         string $rootResource,
         ?string $property,

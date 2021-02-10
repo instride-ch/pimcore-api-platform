@@ -15,33 +15,78 @@
 namespace Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
-use Pimcore\Model\DataObject\Concrete;
+use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
+use Pimcore\Model\Document;
+use Pimcore\Model\DataObject;
+use Pimcore\Model\Asset;
 use Pimcore\Model\Element\ElementInterface;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 final class ElementDataPersister implements ContextAwareDataPersisterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    protected $resourceMetadataFactory;
+
+    public function __construct(ResourceMetadataFactoryInterface $resourceMetadataFactory)
+    {
+        $this->resourceMetadataFactory = $resourceMetadataFactory;
+    }
+
     public function supports($data, array $context = []): bool
     {
         return $data instanceof ElementInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function persist($data, array $context = [])
     {
+        $resourceMetadata = $this->resourceMetadataFactory->create($context['resource_class']);
+
+        $operationName = $context['collection_operation_name'] ?? null;
+        if (null !== $operationName) {
+            $pimcoreAttributes = $resourceMetadata->getCollectionOperationAttribute($operationName, 'pimcore', [], true);
+            $path = $pimcoreAttributes['path'] ?? null;
+            $key = $pimcoreAttributes['key'] ?? null;
+
+            if ($path) {
+                if ($data instanceof Document) {
+                    $data->setParent(Document\Service::createFolderByPath($path));
+                }
+                elseif ($data instanceof DataObject\AbstractObject) {
+                    $data->setParent(DataObject\Service::createFolderByPath($path));
+                }
+                if ($data instanceof Asset) {
+                    $data->setParent(Asset\Service::createFolderByPath($path));
+                }
+            }
+
+            if ($key) {
+                $expressionService = new ExpressionLanguage();
+
+                $data->setKey($expressionService->evaluate($key, [
+                    'element' => $data,
+                    'pimcoreAttributes' => $pimcoreAttributes,
+                    'context' => $context
+                ]));
+            }
+        }
+
+        if ($data->getParent() && $data->getKey()) {
+            if ($data instanceof DataObject\AbstractObject) {
+                $data->setKey(DataObject\Service::getUniqueKey($data));
+            }
+            elseif ($data instanceof Asset) {
+                $data->setKey(Asset\Service::getUniqueKey($data));
+            }
+            elseif ($data instanceof Document) {
+                $data->setKey(Document\Service::getUniqueKey($data));
+            }
+        }
+
         /**
          * @var ElementInterface $data
          */
         $data->save();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove($data, array $context = [])
     {
         /**

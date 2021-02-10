@@ -27,6 +27,10 @@ services:
         tags:
             - { name: w-vision.api.pimcore_type_factory }
 
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\ManyToOneObjectRelationFactory:
+        tags:
+            - { name: w-vision.api.pimcore_type_factory }
+
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\ObjectbricksFactory:
         tags:
             - { name: w-vision.api.pimcore_type_factory }

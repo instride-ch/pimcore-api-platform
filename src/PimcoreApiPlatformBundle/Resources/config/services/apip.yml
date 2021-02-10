@@ -120,6 +120,8 @@ services:
             - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\DataObjectFieldTypeMetadataFactory'
 
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\ElementDataPersister:
+        arguments:
+            - '@api_platform.metadata.resource.metadata_factory'
         tags:
             - { name: api_platform.data_persister, priority: -1000 }
 
