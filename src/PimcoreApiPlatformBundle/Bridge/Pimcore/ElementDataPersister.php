@@ -45,6 +45,7 @@ final class ElementDataPersister implements ContextAwareDataPersisterInterface
             $pimcoreAttributes = $resourceMetadata->getCollectionOperationAttribute($operationName, 'pimcore', [], true);
             $path = $pimcoreAttributes['path'] ?? null;
             $key = $pimcoreAttributes['key'] ?? null;
+            $published = $pimcoreAttributes['published'] ?? null;
 
             if ($path) {
                 if ($data instanceof Document) {
@@ -62,6 +63,16 @@ final class ElementDataPersister implements ContextAwareDataPersisterInterface
                 $expressionService = new ExpressionLanguage();
 
                 $data->setKey($expressionService->evaluate($key, [
+                    'element' => $data,
+                    'pimcoreAttributes' => $pimcoreAttributes,
+                    'context' => $context
+                ]));
+            }
+
+            if (isset($published)) {
+                $expressionService = new ExpressionLanguage();
+
+                $data->setPublished($expressionService->evaluate($published, [
                     'element' => $data,
                     'pimcoreAttributes' => $pimcoreAttributes,
                     'context' => $context

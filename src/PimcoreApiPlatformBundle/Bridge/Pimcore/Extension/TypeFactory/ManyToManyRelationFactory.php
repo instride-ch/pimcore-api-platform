@@ -17,14 +17,14 @@ namespace Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeF
 use ApiPlatform\Core\Metadata\Property\PropertyMetadata;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
+use Pimcore\Model\Element\ElementInterface;
 use Symfony\Component\PropertyInfo\Type;
-use Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\DataObjectFieldTypeMetadataFactoryInterface;
 
-class ManyToManyObjectRelationFactory implements DataObjectFieldTypeMetadataFactoryInterface
+class ManyToManyRelationFactory extends ManyToManyObjectRelationFactory
 {
     public function supports($classDefinition, Data $fieldDefinition): bool
     {
-        return $fieldDefinition instanceof Data\ManyToManyObjectRelation && !$fieldDefinition instanceof Data\AdvancedManyToManyObjectRelation;
+        return $fieldDefinition instanceof Data\ManyToManyRelation && !$fieldDefinition instanceof Data\AdvancedManyToManyRelation;
     }
 
     public function create(
@@ -56,7 +56,7 @@ class ManyToManyObjectRelationFactory implements DataObjectFieldTypeMetadataFact
             new Type(
                 Type::BUILTIN_TYPE_OBJECT,
                 false,
-                AbstractObject::class
+                ElementInterface::class
             )
         );
 

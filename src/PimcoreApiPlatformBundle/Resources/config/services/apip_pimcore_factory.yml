@@ -27,7 +27,11 @@ services:
         tags:
             - { name: w-vision.api.pimcore_type_factory }
 
-    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\ManyToOneObjectRelationFactory:
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\ManyToManyRelationFactory:
+        tags:
+            - { name: w-vision.api.pimcore_type_factory }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\ManyToOneRelationFactory:
         tags:
             - { name: w-vision.api.pimcore_type_factory }
 
@@ -40,5 +44,9 @@ services:
             - { name: w-vision.api.pimcore_type_factory }
 
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\BlockFactory:
+        tags:
+            - { name: w-vision.api.pimcore_type_factory }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\TypeFactory\DateTypeFactory:
         tags:
             - { name: w-vision.api.pimcore_type_factory }

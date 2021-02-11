@@ -21,7 +21,7 @@ use Symfony\Component\PropertyInfo\Type;
 use Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\DataObjectFieldTypeMetadataFactoryInterface;
 use Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\UnionType;
 
-class ManyToOneObjectRelationFactory implements DataObjectFieldTypeMetadataFactoryInterface
+class ManyToOneRelationFactory implements DataObjectFieldTypeMetadataFactoryInterface
 {
     public function supports($classDefinition, Data $fieldDefinition): bool
     {

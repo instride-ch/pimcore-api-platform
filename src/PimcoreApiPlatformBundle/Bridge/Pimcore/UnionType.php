@@ -23,7 +23,7 @@ class UnionType extends Type
      */
     private $types;
 
-    public function __construct($types, bool $nullable = false, string $containerClassName = null)
+    public function __construct($types, Type $collectionValueType, bool $nullable = false, string $containerClassName = null)
     {
         $this->types = $types;
 
@@ -34,4 +34,26 @@ class UnionType extends Type
     {
         return $this->types;
     }
+
+    public function isNullable(): bool
+    {
+        return true;
+    }
+
+    public function isCollection(): bool
+    {
+        return true;
+    }
+
+    public function getCollectionKeyType(): ?self
+    {
+        return new Type(Type::BUILTIN_TYPE_INT);
+    }
+
+    public function getCollectionValueType(): ?self
+    {
+        return $this->getClassName();
+    }
+
+
 }
