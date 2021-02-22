@@ -67,6 +67,8 @@ final class ElementDataPersister implements ContextAwareDataPersisterInterface
                     'pimcoreAttributes' => $pimcoreAttributes,
                     'context' => $context
                 ]));
+
+                $data->setKey(DataObject\Service::getUniqueKey($data));
             }
 
             if (isset($published)) {
