@@ -125,6 +125,12 @@ services:
         tags:
             - { name: api_platform.data_persister, priority: -1000 }
 
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\TagDataPersister:
+        arguments:
+            - '@api_platform.metadata.resource.metadata_factory'
+        tags:
+            - { name: api_platform.data_persister, priority: -1000 }
+
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Extension\PaginationExtension:
         arguments:
             - '@api_platform.pagination'
