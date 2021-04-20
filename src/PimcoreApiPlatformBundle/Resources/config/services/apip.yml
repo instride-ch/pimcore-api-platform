@@ -99,6 +99,12 @@ services:
         arguments:
             - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\ConcretePropertyMetadataFactory.inner'
 
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\NoteMetadataFactory:
+        decorates: 'api_platform.metadata.property.metadata_factory'
+        decoration_priority: 35
+        arguments:
+            - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\NoteMetadataFactory.inner'
+
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Metadata\Property\FieldcollectionPropertyMetadataFactory:
         decorates: 'api_platform.metadata.property.metadata_factory'
         decoration_priority: 35
@@ -126,6 +132,12 @@ services:
             - { name: api_platform.data_persister, priority: -1000 }
 
     Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\TagDataPersister:
+        arguments:
+            - '@api_platform.metadata.resource.metadata_factory'
+        tags:
+            - { name: api_platform.data_persister, priority: -1000 }
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\NoteDataPersister:
         arguments:
             - '@api_platform.metadata.resource.metadata_factory'
         tags:
