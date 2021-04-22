@@ -153,3 +153,7 @@ services:
         decorates: 'ApiPlatform\Core\Api\IriConverterInterface'
         arguments:
             - '@Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\Routing\FieldcollectionIriConverter.inner'
+
+    Wvision\Bundle\PimcoreApiPlatformBundle\Bridge\Pimcore\PropertiesSubresourceProvider:
+        tags:
+            - { name: api_platform.subresource_data_provider }
