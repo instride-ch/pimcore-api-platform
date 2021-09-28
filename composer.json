@@ -22,7 +22,7 @@
     "require": {
         "api-platform/core": "^2.5",
         "pimcore/pimcore": "^6.6",
-        "webonyx/graphql-php": "^0.13"
+        "webonyx/graphql-php": "^14.0"
     },
     "require-dev": {
 
